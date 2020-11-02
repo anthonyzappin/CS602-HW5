@@ -18,6 +18,9 @@ const boroughInput = document.getElementById('boroughInput')
 const searchSubmit = document.getElementById('searchSubmit')
 const boroughSubmit = document.getElementById('boroughSubmit')
 
+const searchGrid = document.getElementById('searchGrid')
+let searchGridP = document.createElement('p');
+
 const searchResultList = document.getElementById('searchResultList')
 const li = {}
 if(searchResultList) {
@@ -159,19 +162,22 @@ window.addEventListener('DOMContentLoaded', (event) => {
         submitRequest()
     })
 
-    searchSubmit.addEventListener('click', event => {
-        console.log("searching data")
-        searchRequest()
-        readLayer.innerText = JSON.stringify(jsonResult)
-        searchInput.value = ""
-    })
-
-    boroughSubmit.addEventListener('click', event => {
-        console.log("searching boroughs data")
-        boroughRequest()
-        readLayer.innerText = JSON.stringify(jsonResult)
-        boroughInput.value = ""
-    })
+    if(jsonResult) {
+        searchSubmit.addEventListener('click', event => {
+            console.log("searching data")
+            searchRequest()
+            readLayer.innerText = JSON.stringify(jsonResult)
+            searchInput.value = ""
+            readLayer.classList.toggle('hidden');
+        })
+    
+        boroughSubmit.addEventListener('click', event => {
+            console.log("searching boroughs data")
+            boroughRequest()
+            readLayer.innerText = JSON.stringify(jsonResult)
+            boroughInput.value = ""
+        })
+    }
 });
 
 
