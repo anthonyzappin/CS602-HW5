@@ -132,6 +132,14 @@ const searchRequest = async () => {
   console.log('made the borough request to the search API');
  }
 
+ function confirmDelete() {
+    var x = confirm("Are you sure you want to delete?");
+        if (x) {
+            console.log("deleting data")
+            deleteRequest()
+        }
+}
+
 window.addEventListener('DOMContentLoaded', (event) => {
     // search.addEventListener('click', event => {
     //     makeRequest()
@@ -155,11 +163,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
         console.log("adding data")
         submitRequest()
     })
+
+  
     
-    deleteSubmit.addEventListener('click', event => {
-        console.log("deleting data")
-        deleteRequest()
-    })
+    // deleteSubmit.addEventListener('click', event => {
+    //     console.log("deleting data")
+    //     deleteRequest()
+    // })
 
     searchSubmit.addEventListener('click', event => {
         console.log("searching data")
