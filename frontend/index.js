@@ -24,7 +24,6 @@ if(searchResultList) {
     li = searchResultList.getElementsByTagName('li');
 }
 
-
 let deleteFullInputValue = ""
 
 let create = {}
@@ -133,19 +132,15 @@ const searchRequest = async () => {
  }
 
  function confirmDelete() {
-    var x = confirm("Are you sure you want to delete?");
+    let x = confirm("Are you sure you want to delete?");
         if (x) {
             console.log("deleting data")
             deleteRequest()
+            deleteInput.value = ""
         }
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    // search.addEventListener('click', event => {
-    //     makeRequest()
-    //     readLayer.innerText = JSON.stringify(jsonResult)
-    //     console.log("fetched read data")
-    // })
     
     search.addEventListener('click', event => {
         searchPanel.classList.toggle('hidden');
@@ -164,23 +159,18 @@ window.addEventListener('DOMContentLoaded', (event) => {
         submitRequest()
     })
 
-  
-    
-    // deleteSubmit.addEventListener('click', event => {
-    //     console.log("deleting data")
-    //     deleteRequest()
-    // })
-
     searchSubmit.addEventListener('click', event => {
         console.log("searching data")
         searchRequest()
         readLayer.innerText = JSON.stringify(jsonResult)
+        searchInput.value = ""
     })
 
     boroughSubmit.addEventListener('click', event => {
         console.log("searching boroughs data")
         boroughRequest()
         readLayer.innerText = JSON.stringify(jsonResult)
+        boroughInput.value = ""
     })
 });
 
