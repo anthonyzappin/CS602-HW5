@@ -90,13 +90,32 @@ export const deleteById = functions.https.onRequest(async (request, response) =>
 
 export const getByName = functions.https.onRequest(async (request, response) => {
     response.set('Access-Control-Allow-Origin', "*")
-    const name = request.query.name;
-    const snapshot = await firestore
-        .collection("/restaurant/")
-        .where('name', '==', name)
-        .get()
-        response.json(snapshot.docs.map((doc: any) => doc.data()))
-})
+
+    cors(request, response, async () => {
+            const name = request.query.name;
+            const snapshot = await firestore
+                .collection("/restaurant/")
+                .where('name', '==', name)
+                .limit(5)
+                .get()
+                response.json(snapshot.docs.map((doc: any) => doc.data()))
+        })
+    })
+
+    export const getByBorough = functions.https.onRequest(async (request, response) => {
+        response.set('Access-Control-Allow-Origin', "*")
+    
+        cors(request, response, async () => {
+                const borough = request.query.borough;
+                const snapshot = await firestore
+                    .collection("/restaurant/")
+                    .where('borough', '==', borough)
+                    .limit(5)
+                    .get()
+                    response.json(snapshot.docs.map((doc: any) => doc.data()))
+            })
+        })
+
 
   export const bootstrap = functions.https.onRequest(async (request, response) => {
     response.set('Access-Control-Allow-Origin', "*")

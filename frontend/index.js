@@ -9,15 +9,24 @@ const deleted = document.getElementById('deleteButton')
 const addPanel = document.getElementById('addPanel')
 const deletePanel = document.getElementById('deletePanel')
 
-
-// const form = document.getElementById('form')
 const submit = document.getElementById('submit')
 const deleteButton = document.getElementById('deleteButton')
 const deleteSubmit = document.getElementById('deleteSubmit')
 const deleteInput = document.getElementById('deleteInput')
+const searchInput = document.getElementById('searchInput')
+const boroughInput = document.getElementById('boroughInput')
+const searchSubmit = document.getElementById('searchSubmit')
+const boroughSubmit = document.getElementById('boroughSubmit')
+
+const searchResultList = document.getElementById('searchResultList')
+const li = {}
+if(searchResultList) {
+    li = searchResultList.getElementsByTagName('li');
+}
+
+
 let deleteFullInputValue = ""
 
-let form = new Map();
 let create = {}
 
 function mapToJson(map) {
@@ -51,20 +60,6 @@ const makeRequest = async () => {
   console.log('restaurant request attempt made');
 }
 
-function mapToJson(map) {
-    return JSON.stringify([...map]);
-}
-
-let jsonObject = {
-    "name"  :  document.getElementById('name').value
-    // "street"  :  document.getElementById('street').value,
-    // "zip"  :  document.getElementById('zip').value,
-    // "borough"  :  document.getElementById('borough').value,
-    // "cuisine"  :  document.getElementById('cuisine').value,
-    // "grade"  :  document.getElementById('grade').value,
-    // "zip"  :  document.getElementById('zip').value,
-  }
-
 const submitRequest = async () => {
      create = {
         "name"  :  document.getElementById('name').value,
@@ -93,7 +88,6 @@ const submitRequest = async () => {
 }
 
 const deleteRequest = async () => {
-console.log("FOOBAR")
    const config = {
        method: 'GET',
        headers: {
@@ -108,21 +102,42 @@ console.log("FOOBAR")
  console.log('made the request to the delete API');
 }
 
-function setForm() {
-    form.set("name", document.getElementById('name').value)
-    form.set("street", document.getElementById('street').value)
-    form.set("zip", document.getElementById('zip').value)
-    form.set("borough", document.getElementById('borough').value)
-    form.set("cuisine", document.getElementById('cuisine').value)
-    form.set("grade", document.getElementById('grade').value)
-}
+const searchRequest = async () => {
+    const config = {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    }
+ 
+  const response = await fetch('https://us-central1-cs602-hw5.cloudfunctions.net/getByName?name=' + searchInput.value, config);
+  jsonResult = await response.json();
+  console.log("search response is " + JSON.stringify(jsonResult));
+  console.log('made the request to the search API');
+ }
+
+ const boroughRequest = async () => {
+    const config = {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    }
+ 
+  const response = await fetch('https://us-central1-cs602-hw5.cloudfunctions.net/getByBorough?borough=' + boroughInput.value, config);
+  jsonResult = await response.json();
+  console.log("borough search response is " + JSON.stringify(jsonResult));
+  console.log('made the borough request to the search API');
+ }
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    search.addEventListener('click', event => {
-        makeRequest()
-        readLayer.innerText = JSON.stringify(jsonResult)
-        console.log("fetched read data")
-    })
+    // search.addEventListener('click', event => {
+    //     makeRequest()
+    //     readLayer.innerText = JSON.stringify(jsonResult)
+    //     console.log("fetched read data")
+    // })
     
     search.addEventListener('click', event => {
         searchPanel.classList.toggle('hidden');
@@ -145,29 +160,20 @@ window.addEventListener('DOMContentLoaded', (event) => {
         console.log("deleting data")
         deleteRequest()
     })
+
+    searchSubmit.addEventListener('click', event => {
+        console.log("searching data")
+        searchRequest()
+        readLayer.innerText = JSON.stringify(jsonResult)
+    })
+
+    boroughSubmit.addEventListener('click', event => {
+        console.log("searching boroughs data")
+        boroughRequest()
+        readLayer.innerText = JSON.stringify(jsonResult)
+    })
 });
 
-// addEventListener('load', event => {
-//     makeRequest()
-//     readLayer.innerText = JSON.stringify(jsonResult)
-//     console.log("fetched read data")
-// })
-
-
-
-document.querySelectorAll('form-control').forEach(item => {
-    item.addEventListener('blur', event => {
-        setForm();
-    })
-})
-
-// add.addEventListener('toggle', event => {
-//     if (event.target.open) {
-//         console.log('open');
-//     } else {
-//         console.log('closed');
-//     }
-// });
 
   
   
